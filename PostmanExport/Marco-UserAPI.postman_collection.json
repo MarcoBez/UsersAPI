@@ -1,0 +1,147 @@
+{
+	"info": {
+		"_postman_id": "be9a85f9-8c97-4f06-ae53-0137c2fa9b53",
+		"name": "Marco/UserAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "https://localhost:44353/api/user/get_all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44353/api/user/get_all/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44353",
+					"path": [
+						"api",
+						"user",
+						"get_all",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44353/api/user/add",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Mielie\",\r\n    \"Surname\": \"Pieter\",\r\n    \"EmailAddr\": \"werewr@yahoo.com\",\r\n    \"CellNo\": \"+27842234571\",\r\n    \"Title\": \"Dr\",\r\n    \"Age\": \"50\",\r\n    \"Dob\": \"1970-01-01\",\r\n    \"Addr1\": \"Unit test 2\",\r\n    \"Addr2\": \"12 mielie street\",\r\n    \"Town\": \"Mielieville\",\r\n    \"Province\": \"Western Cape\",\r\n    \"Pcode\": \"7500\",\r\n    \"TellNo\": \"+27842234571\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44353/api/user/add",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44353",
+					"path": [
+						"api",
+						"user",
+						"add"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44353/api/user/delete?emailAddr&=werewr@yahoo.com",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44353/api/user/delete?emailAddr=werewr@yahoo.com",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44353",
+					"path": [
+						"api",
+						"user",
+						"delete"
+					],
+					"query": [
+						{
+							"key": "emailAddr",
+							"value": "werewr@yahoo.com"
+						},
+						{
+							"key": "",
+							"value": "",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44353/api/user/update",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"Name\": \"Mielie\",\r\n    \"Surname\": \"Pieter\",\r\n    \"EmailAddr\": \"werewr@yahoo.com\",\r\n    \"CellNo\": \"+27845634571\",\r\n    \"Title\": \"Dr\",\r\n    \"Age\": \"51\",\r\n    \"Dob\": \"1970-01-01\",\r\n    \"Addr1\": \"Unit test 2\",\r\n    \"Addr2\": \"15 mielie street\",\r\n    \"Town\": \"Mielieville\",\r\n    \"Province\": \"Northern Cape\",\r\n    \"Pcode\": \"7500\",\r\n    \"TellNo\": \"+27834534571\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:44353/api/user/update/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44353",
+					"path": [
+						"api",
+						"user",
+						"update",
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "https://localhost:44353/api/user/get_all",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:44353/api/user/get/",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "44353",
+					"path": [
+						"api",
+						"user",
+						"get",
+						""
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

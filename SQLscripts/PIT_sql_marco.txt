@@ -1,0 +1,319 @@
+USE [PIT]
+GO
+
+/****** Object:  Table [dbo].[user_title]    Script Date: 29/09/2020 7:35:52 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[user_title](
+	[id] [int] NULL,
+	[title] [varchar](5) NULL
+) ON [PRIMARY]
+GO
+
+
+--------------------------------------------------------------------------
+
+
+USE [PIT]
+GO
+
+/****** Object:  Table [dbo].[user_province]    Script Date: 29/09/2020 7:35:37 PM ******/
+SET ANSI_NULLS ON
+GO
+
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE TABLE [dbo].[user_province](
+	[id] [int] NULL,
+	[province] [varchar](20) NULL
+) ON [PRIMARY]
+GO
+
+
+---------------------------------------------------------------------------
+
+
+USE [PIT]
+GO
+/****** Object:  Table [dbo].[user_details]    Script Date: 30/09/2020 8:37:06 AM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+CREATE TABLE [dbo].[user_details](
+	[title] [int] NULL,
+	[name] [varchar](100) NOT NULL,
+	[surname] [varchar](100) NOT NULL,
+	[email] [varchar](100) NOT NULL,
+	[age] [int] NULL,
+	[dob] [varchar](10) NULL,
+	[addr_1] [varchar](100) NULL,
+	[addr_2] [varchar](100) NULL,
+	[town] [varchar](100) NULL,
+	[province] [int] NULL,
+	[p_code] [varchar](5) NULL,
+	[tel_no] [varchar](12) NULL,
+	[cel_no] [varchar](12) NOT NULL,
+ CONSTRAINT [PK_user_details] PRIMARY KEY CLUSTERED 
+(
+	[email] ASC
+)WITH (PAD_INDEX = OFF, STATISTICS_NORECOMPUTE = OFF, IGNORE_DUP_KEY = OFF, ALLOW_ROW_LOCKS = ON, ALLOW_PAGE_LOCKS = ON, OPTIMIZE_FOR_SEQUENTIAL_KEY = OFF) ON [PRIMARY]
+) ON [PRIMARY]
+GO
+INSERT [dbo].[user_details] ([title], [name], [surname], [email], [age], [dob], [addr_1], [addr_2], [town], [province], [p_code], [tel_no], [cel_no]) VALUES (N'0', N'Jane', N'Dory', N'jane.dory@hotmail.com', 25, CAST(N'1995-01-01' AS Date), N'12 Keningston Str', N'Queenston', N'Durban', N'4', N'6600', N'0319001200', N'0651357980')
+GO
+INSERT [dbo].[user_details] ([title], [name], [surname], [email], [age], [dob], [addr_1], [addr_2], [town], [province], [p_code], [tel_no], [cel_no]) VALUES (N'1', N'John', N'Doe', N'johnd@yahoo.com', 30, CAST(N'1990-01-01' AS Date), N'Unit 30 Block A', N'100 Church street', N'Durbanville', N'0', N'7500', N'+27219109750', N'+27842835719')
+GO
+
+
+
+--------------------------------------------------------------------------------
+
+
+-- user details
+SELECT * FROM user_details
+
+-- title link table
+SELECT * FROM user_title
+
+--province link table
+SELECT * FROM user_province
+
+-- join the 3 tables
+SELECT 
+	ut.title AS 'title',
+	ud.name AS 'name',
+	ud.surname AS 'surname',
+	ud.email AS 'email',
+	ud.dob AS 'dob',
+	ud.age AS 'age',
+	ud.addr_1 AS 'addr_1',
+	ud.addr_2 AS 'addr_2',
+	ud.town AS 'town',
+	up.province AS 'province',
+	ud.p_code AS 'p_code',
+	ud.tel_no AS 'tel_no',
+	ud.cel_no AS 'cel_no'
+FROM user_details ud
+	JOIN user_title ut ON ut.id = ud.title
+	JOIN user_province up ON up.id = ud.province
+
+
+-----------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_get_all_users]
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;	
+
+--select all users
+	SELECT 
+		ut.title AS 'title',
+		ud.name AS 'name',
+		ud.surname AS 'surname',
+		ud.email AS 'email',
+		ud.dob AS 'dob',
+		ud.age AS 'age',
+		ud.addr_1 AS 'addr_1',
+		ud.addr_2 AS 'addr_2',
+		ud.town AS 'town',
+		up.province AS 'province',
+		ud.p_code AS 'p_code',
+		ud.tel_no AS 'tel_no',
+		ud.cel_no AS 'cel_no'
+	FROM user_details ud
+		JOIN user_title ut ON ut.id = ud.title
+		JOIN user_province up ON up.id = ud.province
+END
+
+
+-------------------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_add_user](@title int,@name varchar(100),@surname varchar(100),@email varchar(100),@dob varchar(10), @age int,@addr1 varchar(100),@addr2 varchar(100),@town varchar(100), @province int, @pcode varchar(5),@telno varchar(12),@celno varchar(12))
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;
+
+	BEGIN TRANSACTION
+
+		INSERT INTO user_details(title,name,surname,email,dob,age,addr_1,addr_2,town,province,p_code,tel_no,cel_no)
+		VALUES(@title,@name,@surname,@email,@dob,@age,@addr1,@addr2,@town,@province,@pcode,@telno,@celno)
+
+
+	COMMIT TRANSACTION
+
+END
+
+
+
+------------------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_delete_user](@email varchar(100))
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;
+
+	BEGIN TRANSACTION
+
+		DELETE user_details
+		WHERE email = @email
+
+	COMMIT TRANSACTION
+
+END
+
+
+--------------------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_update_user](@title int,@name varchar(100),@surname varchar(100),@email varchar(100),@dob varchar(10), @age int,@addr1 varchar(100),@addr2 varchar(100),@town varchar(100), @province int, @pcode varchar(5),@telno varchar(12),@celno varchar(12))
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;
+
+	BEGIN TRANSACTION
+
+		UPDATE user_details
+		   SET [age] = @age
+			  ,[addr_1] = @addr1
+			  ,[addr_2] = @addr2
+			  ,[town] = @town
+			  ,[province] = @province
+			  ,[p_code] = @pcode
+			  ,[tel_no] = @telno
+			  ,[cel_no] = @celno
+		WHERE email = @email
+
+	COMMIT TRANSACTION
+
+END
+
+
+------------------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_delete_all_users]
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;
+
+	BEGIN TRANSACTION
+
+		DELETE user_details
+
+	COMMIT TRANSACTION
+
+END
+
+
+-------------------------------------------------------------------------------------
+
+
+USE PIT
+GO
+/****** Object:  StoredProcedure [dbo].[sp_get_all_users]    Script Date: 30/09/2020 4:58:31 PM ******/
+SET ANSI_NULLS ON
+GO
+SET QUOTED_IDENTIFIER ON
+GO
+
+CREATE PROCEDURE [dbo].[sp_get_user](@email varchar(100))
+AS
+-----------------------------------------------------------------
+--Marco Bezuidenhout - 30 Sep 2020 - Initial Create
+-----------------------------------------------------------------
+BEGIN
+
+	SET NOCOUNT ON;
+
+		SELECT 
+			ut.title AS 'title',
+			ud.name AS 'name',
+			ud.surname AS 'surname',
+			ud.email AS 'email',
+			ud.dob AS 'dob',
+			ud.age AS 'age',
+			ud.addr_1 AS 'addr_1',
+			ud.addr_2 AS 'addr_2',
+			ud.town AS 'town',
+			up.province AS 'province',
+			ud.p_code AS 'p_code',
+			ud.tel_no AS 'tel_no',
+			ud.cel_no AS 'cel_no'
+		FROM user_details ud
+			JOIN user_title ut ON ut.id = ud.title
+			JOIN user_province up ON up.id = ud.province
+		WHERE ud.email = @email
+
+END
+
+
+---------------------------------------------------------------------------------------

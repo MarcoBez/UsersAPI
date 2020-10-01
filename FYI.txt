@@ -1,0 +1,5 @@
+FYI
+
+This project consists of a DB and an API, no front-end project.
+If you would like me to do the front-end project, please do let me know.
+
